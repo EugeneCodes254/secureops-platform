@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,13 +24,19 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      setMessage(data.message);
-    } catch (error) {
-      setMessage("Unable to connect to the server.");
-    }
-  };
-
-  return (
+      if (data.success) {
+        window.location.href = "/dashboard";
+      } else {
+        setMessage(data.message);
+      }
+      
+      } catch (error) {
+        setMessage("Server error. Please try again.");
+      }
+      };
+      
+      return (
+ 
     <main className="min-h-screen flex items-center justify-center bg-slate-950">
       <div className="w-full max-w-md rounded-xl bg-slate-900 p-8 shadow-lg">
         <h1 className="text-3xl font-bold text-white mb-6">
