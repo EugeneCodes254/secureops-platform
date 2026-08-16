@@ -15,7 +15,15 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
+  role      UserRole @default(OFFICER)
   createdAt DateTime @default(now())
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  OFFICER
+  VIEWER
 }
 
 // ==============================

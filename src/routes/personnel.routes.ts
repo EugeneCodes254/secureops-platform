@@ -8,6 +8,9 @@ import {
   deletePersonnel,
 } from "../controllers/personnel.controller";
 
+import { authenticateToken } from "../middleware/auth.middleware";
+import { requireRole } from "../middleware/role.middleware";
+
 const router = Router();
 
 router.get("/test", (_req, res) => {
@@ -17,10 +20,41 @@ router.get("/test", (_req, res) => {
   });
 });
 
-router.post("/", createPersonnel);
-router.get("/", getPersonnel);
-router.get("/:id", getSinglePersonnel);
-router.put("/:id", updatePersonnel);
-router.delete("/:id", deletePersonnel);
+// View personnel
+router.get(
+  "/",
+  authenticateToken,
+  requireRole("ADMIN", "MANAGER", "OFFICER", "VIEWER"),
+  getPersonnel
+);
+
+router.get(
+  "/:id",
+  authenticateToken,
+  requireRole("ADMIN", "MANAGER", "OFFICER", "VIEWER"),
+  getSinglePersonnel
+);
+
+// Manage personnel
+router.post(
+  "/",
+  authenticateToken,
+  requireRole("ADMIN", "MANAGER"),
+  createPersonnel
+);
+
+router.put(
+  "/:id",
+  authenticateToken,
+  requireRole("ADMIN", "MANAGER"),
+  updatePersonnel
+);
+
+router.delete(
+  "/:id",
+  authenticateToken,
+  requireRole("ADMIN", "MANAGER"),
+  deletePersonnel
+);
 
 export default router;

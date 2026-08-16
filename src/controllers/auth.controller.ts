@@ -38,6 +38,7 @@ export const register = async (req: Request, res: Response) => {
       user: {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -84,8 +85,9 @@ export const login = async (req: Request, res: Response) => {
       {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
-      "secureops-secret",
+      process.env.JWT_SECRET!,
       {
         expiresIn: "1d",
       }
@@ -98,6 +100,7 @@ export const login = async (req: Request, res: Response) => {
       user: {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
