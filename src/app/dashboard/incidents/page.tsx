@@ -45,10 +45,27 @@ export default function IncidentsPage() {
       setLoading(true);
       setError("");
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
       const [incidentResponse, personnelResponse] =
         await Promise.all([
-          fetch(`${API_URL}/incidents`),
-          fetch(`${API_URL}/personnel`),
+          fetch(`${API_URL}/incidents`, {
+            headers,
+            cache: "no-store",
+          }),
+          fetch(`${API_URL}/personnel`, {
+            headers,
+            cache: "no-store",
+          }),
         ]);
 
       const incidentData = await incidentResponse.json();
@@ -104,6 +121,7 @@ export default function IncidentsPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             title,
@@ -158,6 +176,7 @@ export default function IncidentsPage() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             title: incident.title,
@@ -206,6 +225,9 @@ export default function IncidentsPage() {
         `${API_URL}/incidents/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
