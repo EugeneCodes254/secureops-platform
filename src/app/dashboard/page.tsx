@@ -18,6 +18,31 @@ type Incident = {
 type User = {
   id: number;
   email: string;
+  role?: string;
+};
+
+type PersonnelStatus = "ACTIVE" | "OFF_DUTY" | "SUSPENDED";
+
+type Personnel = {
+  id: number;
+  fullName: string;
+  role: string;
+  phone: string;
+  site: string;
+  status: PersonnelStatus;
+  createdAt: string;
+};
+
+type SiteStatus = "ACTIVE" | "INACTIVE" | "MAINTENANCE";
+
+type Site = {
+  id: number;
+  name: string;
+  location: string;
+  client: string;
+  contact: string | null;
+  status: SiteStatus;
+  createdAt: string;
 };
 
 const API_URL = "http://localhost:5000";
@@ -27,6 +52,8 @@ export default function DashboardPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [personnel, setPersonnel] = useState<Personnel[]>([]);
+  const [sites, setSites] = useState<Site[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [error, setError] = useState("");
@@ -42,24 +69,49 @@ export default function DashboardPage() {
         return;
       }
 
-      const response = await fetch(`${API_URL}/incidents`, {
-        cache: "no-store",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-      if (!response.ok) {
-        throw new Error("Failed to load incidents");
+      const [incidentsResponse, personnelResponse, sitesResponse] =
+        await Promise.all([
+          fetch(`${API_URL}/incidents`, {
+            cache: "no-store",
+            headers,
+          }),
+          fetch(`${API_URL}/personnel`, {
+            cache: "no-store",
+            headers,
+          }),
+          fetch(`${API_URL}/sites`, {
+            cache: "no-store",
+            headers,
+          }),
+        ]);
+
+      if (
+        !incidentsResponse.ok ||
+        !personnelResponse.ok ||
+        !sitesResponse.ok
+      ) {
+        throw new Error("Failed to load dashboard data");
       }
 
-      const data = await response.json();
+      const incidentsData = await incidentsResponse.json();
+      const personnelData = await personnelResponse.json();
+      const sitesData = await sitesResponse.json();
 
-      if (!data.success) {
-        throw new Error(data.message || "Unable to load incidents");
+      if (
+        !incidentsData.success ||
+        !personnelData.success ||
+        !sitesData.success
+      ) {
+        throw new Error("Unable to load dashboard data");
       }
 
-      setIncidents(data.incidents || []);
+      setIncidents(incidentsData.incidents || []);
+      setPersonnel(personnelData.personnel || []);
+      setSites(sitesData.sites || []);
       setLastUpdated(new Date());
     } catch (err) {
       console.error("Dashboard error:", err);
@@ -489,6 +541,74 @@ text-lg text-red-400">
 
                 <p className="mt-3 text-xs text-slate-500">
                   Highest priority events
+                </p>
+
+              </div>
+
+              {/* ACTIVE PERSONNEL */}
+              <div className="rounded-xl border border-blue-500/20
+bg-slate-900/60 p-5 transition hover:border-blue-500/30">
+
+                <div className="flex items-start justify-between">
+
+                  <div>
+                    <p className="text-xs uppercase tracking-wider
+text-slate-500">
+                      Active Personnel
+                    </p>
+
+                    <p className="mt-3 text-3xl font-bold text-blue-400">
+                      {loading
+                        ? "—"
+                        : personnel.filter(
+                            (person) => person.status === "ACTIVE"
+                          ).length}
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg bg-blue-500/10 px-3 py-2
+text-lg text-blue-400">
+                    👤
+                  </div>
+
+                </div>
+
+                <p className="mt-3 text-xs text-slate-500">
+                  Security personnel currently active
+                </p>
+
+              </div>
+
+              {/* ACTIVE SITES */}
+              <div className="rounded-xl border border-purple-500/20
+bg-slate-900/60 p-5 transition hover:border-purple-500/30">
+
+                <div className="flex items-start justify-between">
+
+                  <div>
+                    <p className="text-xs uppercase tracking-wider
+text-slate-500">
+                      Active Sites
+                    </p>
+
+                    <p className="mt-3 text-3xl font-bold text-purple-400">
+                      {loading
+                        ? "—"
+                        : sites.filter(
+                            (site) => site.status === "ACTIVE"
+                          ).length}
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg bg-purple-500/10 px-3 py-2
+text-lg text-purple-400">
+                    ◈
+                  </div>
+
+                </div>
+
+                <p className="mt-3 text-xs text-slate-500">
+                  Security sites currently operational
                 </p>
 
               </div>
