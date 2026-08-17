@@ -55,11 +55,31 @@ export default function ReportsPage() {
     try {
       setLoading(true);
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        router.replace("/auth/login");
+        return;
+      }
+
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
       const [incidentsRes, personnelRes, sitesRes] =
         await Promise.all([
-          fetch("http://localhost:5000/incidents"),
-          fetch("http://localhost:5000/personnel"),
-          fetch("http://localhost:5000/sites"),
+          fetch("http://localhost:5000/incidents", {
+            headers,
+            cache: "no-store",
+          }),
+          fetch("http://localhost:5000/personnel", {
+            headers,
+            cache: "no-store",
+          }),
+          fetch("http://localhost:5000/sites", {
+            headers,
+            cache: "no-store",
+          }),
         ]);
 
       const incidentsData = await incidentsRes.json();
