@@ -44,7 +44,20 @@ export default function SitesPage() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/sites");
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
+      const response = await fetch("http://localhost:5000/sites", {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const data = await response.json();
 
       if (data.success) {
@@ -71,10 +84,18 @@ export default function SitesPage() {
     try {
       setError("");
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
       const response = await fetch("http://localhost:5000/sites", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name,
@@ -114,10 +135,20 @@ export default function SitesPage() {
     if (!confirmed) return;
 
     try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
       const response = await fetch(
         `http://localhost:5000/sites/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
