@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient, Severity, Status } from "@prisma/client";
+import { notifyUsersByRoles } from "../services/notification.service";
 
 const prisma = new PrismaClient();
 
@@ -60,6 +61,20 @@ export const createIncident = async (req: Request, res: Response) => {
         personnel: true,
       },
     });
+
+    const notificationType =
+      severity === Severity.CRITICAL
+        ? "ALERT"
+        : severity === Severity.HIGH
+        ? "WARNING"
+        : "INFO";
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "New Security Incident",
+      `${severity} incident reported: ${title}`,
+      notificationType as any
+    );
 
     return res.status(201).json({
       success: true,
@@ -252,6 +267,22 @@ export const updateIncident = async (
         personnel: true,
       },
     });
+
+    if (status === Status.RESOLVED) {
+      await notifyUsersByRoles(
+        ["ADMIN", "MANAGER"],
+        "Incident Resolved",
+        `Incident "${incident.title}" has been resolved.`,
+        "SUCCESS" as any
+      );
+    } else {
+      await notifyUsersByRoles(
+        ["ADMIN", "MANAGER"],
+        "Incident Updated",
+        `Incident "${incident.title}" has been updated.`,
+        "INFO" as any
+      );
+    }
 
     return res.status(200).json({
       success: true,

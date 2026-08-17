@@ -17,6 +17,8 @@ model User {
   password  String
   role      UserRole @default(OFFICER)
   createdAt DateTime @default(now())
+
+  notifications Notification[]
 }
 
 enum UserRole {
@@ -24,6 +26,25 @@ enum UserRole {
   MANAGER
   OFFICER
   VIEWER
+}
+
+// ==============================
+// NOTIFICATIONS
+// ==============================
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  title     String
+  message   String
+  type      NotificationType @default(INFO)
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
 }
 
 // ==============================
@@ -70,6 +91,17 @@ model Site {
   contact   String?
   status    SiteStatus @default(ACTIVE)
   createdAt DateTime   @default(now())
+}
+
+// ==============================
+// NOTIFICATION TYPE
+// ==============================
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ALERT
 }
 
 // ==============================

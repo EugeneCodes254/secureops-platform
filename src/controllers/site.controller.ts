@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient, SiteStatus } from "@prisma/client";
+import { notifyUsersByRoles } from "../services/notification.service";
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,13 @@ export const createSite = async (req: Request, res: Response) => {
         status: status || SiteStatus.ACTIVE,
       },
     });
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Security Site Added",
+      `${site.name} has been added to the security sites.`,
+      "INFO"
+    );
 
     return res.status(201).json({
       success: true,
@@ -125,6 +133,20 @@ export const updateSite = async (req: Request, res: Response) => {
       },
     });
 
+    const notificationType =
+      site.status === SiteStatus.MAINTENANCE
+        ? "WARNING"
+        : site.status === SiteStatus.INACTIVE
+        ? "WARNING"
+        : "INFO";
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Security Site Updated",
+      `${site.name} has been updated. Current status: ${site.status}.`,
+      notificationType
+    );
+
     return res.status(200).json({
       success: true,
       message: "Site updated successfully",
@@ -152,9 +174,27 @@ export const deleteSite = async (req: Request, res: Response) => {
       });
     }
 
+    const site = await prisma.site.findUnique({
+      where: { id },
+    });
+
+    if (!site) {
+      return res.status(404).json({
+        success: false,
+        message: "Site not found",
+      });
+    }
+
     await prisma.site.delete({
       where: { id },
     });
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Security Site Removed",
+      `${site.name} has been removed from the security sites.`,
+      "WARNING"
+    );
 
     return res.status(200).json({
       success: true,

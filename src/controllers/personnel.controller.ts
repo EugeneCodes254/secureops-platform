@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient, PersonnelStatus } from "@prisma/client";
+import { notifyUsersByRoles } from "../services/notification.service";
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,13 @@ export const createPersonnel = async (req: Request, res: Response) => {
         status: status || PersonnelStatus.ACTIVE,
       },
     });
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Personnel Added",
+      `${personnel.fullName} has been added to the security personnel roster.`,
+      "INFO"
+    );
 
     return res.status(201).json({
       success: true,
@@ -117,6 +125,13 @@ export const updatePersonnel = async (
       },
     });
 
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Personnel Updated",
+      `${personnel.fullName}'s personnel record has been updated.`,
+      "INFO"
+    );
+
     return res.status(200).json({
       success: true,
       message: "Personnel updated successfully",
@@ -140,9 +155,27 @@ export const deletePersonnel = async (
   try {
     const id = Number(req.params.id);
 
+    const personnel = await prisma.personnel.findUnique({
+      where: { id },
+    });
+
+    if (!personnel) {
+      return res.status(404).json({
+        success: false,
+        message: "Personnel not found",
+      });
+    }
+
     await prisma.personnel.delete({
       where: { id },
     });
+
+    await notifyUsersByRoles(
+      ["ADMIN", "MANAGER"],
+      "Personnel Removed",
+      `${personnel.fullName} has been removed from the security personnel roster.`,
+      "WARNING"
+    );
 
     return res.status(200).json({
       success: true,
