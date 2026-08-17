@@ -40,7 +40,20 @@ export default function PersonnelPage() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`${API_URL}/personnel`);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/personnel`, {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const data = await response.json();
 
       if (!data.success) {
@@ -129,10 +142,18 @@ export default function PersonnelPage() {
 
       const method = editingId ? "PUT" : "POST";
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(form),
       });
@@ -162,8 +183,18 @@ export default function PersonnelPage() {
     try {
       setError("");
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
       const response = await fetch(`${API_URL}/personnel/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
