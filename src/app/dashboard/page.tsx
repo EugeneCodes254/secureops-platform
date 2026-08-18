@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import NotificationBell from "@/components/NotificationBell";
 
 type Severity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 type Status = "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
@@ -359,7 +360,9 @@ text-red-400">
                 </h1>
               </div>
 
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-3">
+
+                <NotificationBell />
 
                 <div className="hidden text-right sm:block">
                   <p className="text-xs text-white">
