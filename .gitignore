@@ -8,3 +8,15 @@ node_modules
 .agents/
 .claude/
 .windsurf/
+
+# Build output
+dist/
+
+# Compiled JavaScript generated from TypeScript
+src/**/*.js
+prisma.config.js
+
+# Environment variables
+.env
+.env.*
+!.env.example
