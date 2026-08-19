@@ -68,15 +68,15 @@ export default function ReportsPage() {
 
       const [incidentsRes, personnelRes, sitesRes] =
         await Promise.all([
-          fetch("http://localhost:5000/incidents", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/incidents`, {
             headers,
             cache: "no-store",
           }),
-          fetch("http://localhost:5000/personnel", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/personnel`, {
             headers,
             cache: "no-store",
           }),
-          fetch("http://localhost:5000/sites", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/sites`, {
             headers,
             cache: "no-store",
           }),

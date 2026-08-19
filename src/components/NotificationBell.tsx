@@ -11,7 +11,7 @@ type Notification = {
   createdAt: string;
 };
 
-const API_URL = "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -31,9 +31,9 @@ export default function NotificationBell() {
 
       if (!token) return;
 
-      const response = await fetch(`${API_URL}/notifications`, {
+      const response = await fetch(API_URL + "/notifications", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: "Bearer " + token,
         },
         cache: "no-store",
       });
@@ -60,7 +60,7 @@ export default function NotificationBell() {
         `${API_URL}/notifications/unread-count`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: "Bearer " + token,
           },
           cache: "no-store",
         }
@@ -121,10 +121,10 @@ export default function NotificationBell() {
 
       if (!token) return;
 
-      await fetch(`${API_URL}/notifications/${id}/read`, {
+      await fetch(API_URL + "/notifications/" + id + "/read", {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: "Bearer " + token,
         },
       });
 
@@ -150,10 +150,10 @@ export default function NotificationBell() {
 
       if (!token) return;
 
-      await fetch(`${API_URL}/notifications/read-all`, {
+      await fetch(API_URL + "/notifications/read-all", {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: "Bearer " + token,
         },
       });
 

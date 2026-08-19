@@ -51,7 +51,7 @@ export default function SitesPage() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/sites", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sites`, {
         cache: "no-store",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ export default function SitesPage() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/sites", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export default function SitesPage() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/sites/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/sites/${id}`,
         {
           method: "DELETE",
           headers: {
