@@ -15,16 +15,22 @@ export default function Home() {
         </p>
 
         <div className="mt-12 flex justify-center gap-4">
-          <button className="rounded-xl bg-red-600 px-6 py-3 font-semibold hover:bg-red-700 transition">
+          <a
+            href="/auth/login"
+            className="rounded-xl bg-red-600 px-6 py-3 font-semibold hover:bg-red-700 transition"
+          >
             Launch Dashboard
-          </button>
+          </a>
 
-          <button className="rounded-xl border border-slate-700 px-6 py-3 hover:bg-slate-800 transition">
+          <a
+            href="#stats"
+            className="rounded-xl border border-slate-700 px-6 py-3 hover:bg-slate-800 transition"
+          >
             Learn More
-          </button>
+          </a>
         </div>
 
-        <div className="mt-20 grid gap-6 md:grid-cols-3">
+        <div id="stats" className="mt-20 grid gap-6 md:grid-cols-3">
           <div className="rounded-2xl bg-slate-900 border border-slate-800 p-8">
             <h2 className="text-4xl font-bold text-red-500">128</h2>
             <p className="mt-2 text-slate-400">Security Officers</p>
