@@ -224,9 +224,9 @@ export default function SitesPage() {
 
           <button
             onClick={() => router.push("/dashboard")}
-            className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800"
+            className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-red-500 hover:bg-slate-800 hover:text-white"
           >
-            Overview
+            ← Dashboard
           </button>
 
           <button
