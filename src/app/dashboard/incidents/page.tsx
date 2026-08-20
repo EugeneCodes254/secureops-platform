@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 
 type Severity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
@@ -28,6 +30,7 @@ type Incident = {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function IncidentsPage() {
+  const router = useRouter();
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [personnel, setPersonnel] = useState<Personnel[]>([]);
 
@@ -315,12 +318,21 @@ export default function IncidentsPage() {
 
           </div>
 
-          <button
-            onClick={loadData}
-            className="rounded-lg border border-slate-700 px-4 py-2 text-sm transition hover:bg-slate-800"
-          >
-            ↻ Refresh
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-red-500 hover:bg-slate-800 hover:text-white"
+            >
+              ← Dashboard
+            </button>
+
+            <button
+              onClick={loadData}
+              className="rounded-lg border border-slate-700 px-4 py-2 text-sm transition hover:bg-slate-800"
+            >
+              ↻ Refresh
+            </button>
+          </div>
 
         </div>
 

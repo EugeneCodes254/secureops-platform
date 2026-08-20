@@ -319,6 +319,13 @@ export default function OperationsPage() {
                 )}
 
                 <button
+                  onClick={() => router.push("/dashboard")}
+                  className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-xs text-slate-300 transition hover:border-red-500 hover:text-white"
+                >
+                  ← Dashboard
+                </button>
+
+                <button
                   onClick={loadOperations}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-xs text-slate-300 hover:border-slate-500 hover:text-white"
                 >

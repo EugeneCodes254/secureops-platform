@@ -266,7 +266,7 @@ text-slate-500">
           {/* NAVIGATION */}
           <nav className="flex-1 space-y-2 p-4">
 
-            <div className="rounded-lg border border-red-500/20 
+            <div className="rounded-lg border border-red-500/20
 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-400">
               <span className="mr-3">◉</span>
               Operations
@@ -274,7 +274,7 @@ bg-red-500/10 px-4 py-3 text-sm font-medium text-red-400">
 
             <button
               onClick={() => router.push("/dashboard/incidents")}
-              className="w-full rounded-lg px-4 py-3 text-left text-sm 
+              className="w-full rounded-lg px-4 py-3 text-left text-sm
 text-slate-400 transition hover:bg-slate-900 hover:text-white"
             >
               <span className="mr-3">▣</span>
@@ -282,39 +282,39 @@ text-slate-400 transition hover:bg-slate-900 hover:text-white"
             </button>
 
             <button
-              className="w-full rounded-lg px-4 py-3 text-left text-sm 
-text-slate-500"
+              onClick={() => router.push("/dashboard/personnel")}
+              className="w-full rounded-lg px-4 py-3 text-left text-sm
+text-slate-400 transition hover:bg-slate-900 hover:text-white"
+            >
+              <span className="mr-3">♙</span>
+              Personnel
+            </button>
+
+            <button
+              onClick={() => router.push("/dashboard/sites")}
+              className="w-full rounded-lg px-4 py-3 text-left text-sm
+text-slate-400 transition hover:bg-slate-900 hover:text-white"
+            >
+              <span className="mr-3">◆</span>
+              Sites
+            </button>
+
+            <button
+              onClick={() => router.push("/dashboard/reports")}
+              className="w-full rounded-lg px-4 py-3 text-left text-sm
+text-slate-400 transition hover:bg-slate-900 hover:text-white"
+            >
+              <span className="mr-3">▤</span>
+              Reports
+            </button>
+
+            <button
+              onClick={() => router.push("/dashboard/notifications")}
+              className="w-full rounded-lg px-4 py-3 text-left text-sm
+text-slate-400 transition hover:bg-slate-900 hover:text-white"
             >
               <span className="mr-3">◈</span>
-              Threat Monitoring
-              <span className="float-right text-[9px] uppercase 
-text-slate-600">
-                Soon
-              </span>
-            </button>
-
-            <button
-              className="w-full rounded-lg px-4 py-3 text-left text-sm 
-text-slate-500"
-            >
-              <span className="mr-3">⌁</span>
-              Activity Logs
-              <span className="float-right text-[9px] uppercase 
-text-slate-600">
-                Soon
-              </span>
-            </button>
-
-            <button
-              className="w-full rounded-lg px-4 py-3 text-left text-sm 
-text-slate-500"
-            >
-              <span className="mr-3">⚙</span>
-              Settings
-              <span className="float-right text-[9px] uppercase 
-text-slate-600">
-                Soon
-              </span>
+              Notifications
             </button>
 
           </nav>
