@@ -38,7 +38,7 @@ export const register = async (req: Request, res: Response) => {
       user: {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: loginRole,
       },
     });
   } catch (error) {
@@ -81,11 +81,18 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    // TEMPORARY DEMO OVERRIDE
+    // Promote the demo account to ADMIN for the presentation.
+    const loginRole =
+      user.email === "demo@secureops.com"
+        ? "ADMIN"
+        : user.role;
+
     const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: loginRole,
       },
       process.env.JWT_SECRET!,
       {
