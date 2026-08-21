@@ -14,8 +14,12 @@ router.post("/promote", async (req, res) => {
     }
 
     const user = await prisma.user.update({
-      where: { email: "demo@secureops.com" },
-      data: { role: "ADMIN" },
+      where: {
+        email: "demo@secureops.com",
+      },
+      data: {
+        role: "ADMIN",
+      },
       select: {
         id: true,
         email: true,
@@ -23,16 +27,16 @@ router.post("/promote", async (req, res) => {
       },
     });
 
-    res.json({
+    return res.json({
       success: true,
       message: "Demo account promoted",
       user,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Could not promote demo account",
     });
   } finally {
     await prisma.$disconnect();
