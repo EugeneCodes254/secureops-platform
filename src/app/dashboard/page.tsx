@@ -454,6 +454,50 @@ bg-red-500/10 p-4 text-sm text-red-300">
               </div>
             )}
 
+            {/* QUICK ACTIONS */}
+            <div className="mb-6 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    Quick Actions
+                  </p>
+                  <p className="mt-1 text-xs text-slate-600">
+                    Common security operations
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  <button
+                    onClick={() => router.push("/dashboard/incidents")}
+                    className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-xs font-semibold text-red-400 transition hover:border-red-500/50 hover:bg-red-500/15 hover:text-red-300"
+                  >
+                    + Report Incident
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/dashboard/personnel")}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white"
+                  >
+                    Personnel
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/dashboard/sites")}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white"
+                  >
+                    Sites
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/dashboard/reports")}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white"
+                  >
+                    Reports
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {/* STAT CARDS */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 
 xl:grid-cols-4">
